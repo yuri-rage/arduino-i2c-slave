@@ -1,0 +1,14 @@
+# Syntax Coloring Map For I2C_Slave
+
+# Datatypes (KEYWORD1)
+Slave	KEYWORD1
+
+# Methods and Functions (KEYWORD2)
+begin	KEYWORD2
+numErrors	KEYWORD2
+onCommand	KEYWORD2
+writeRegisters	KEYWORD2
+
+# Instances (KEYWORD2)
+
+# Constants (LITERAL1)
