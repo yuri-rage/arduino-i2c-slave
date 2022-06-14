@@ -45,6 +45,9 @@ void I2C_Slave::begin(uint8_t addr) {
 // return the number of I2C comm errors encountered
 uint32_t I2C_Slave::numErrors() { return _numErrors; }
 
+// return number of available registers
+size_t I2C_Slave::numRegisters() { return BUFFER_LENGTH; }
+
 // sets the function called on receipt of a command
 void I2C_Slave::onCommand(void (*function)(uint8_t, uint8_t)) {
     _user_onCommand = function;

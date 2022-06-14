@@ -42,6 +42,7 @@ class I2C_Slave {
     void begin();
     void begin(uint8_t);
     uint32_t numErrors();
+    size_t numRegisters();
     void onCommand(void (*)(uint8_t, uint8_t));
     template <typename T>
     size_t writeRegisters(T);
