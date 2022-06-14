@@ -46,13 +46,14 @@ class I2C_Slave {
     void onCommand(void (*)(uint8_t, uint8_t));
     template <typename T>
     size_t writeRegisters(T);
+    size_t writeRegisters(char*);
 };
 
 // global register variable for use in static methods
 inline volatile char _registers[BUFFER_LENGTH];  // BUFFER_LENGTH from Wire.h
 
 // store any reasonable data object as an array of bytes (char)
-// first byte is the object size (in bytes)
+// register 0 is set to the object size (in bytes)
 template <typename T>
 size_t I2C_Slave::writeRegisters(T val) {
     // implementation must reside in header file

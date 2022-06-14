@@ -53,6 +53,16 @@ void I2C_Slave::onCommand(void (*function)(uint8_t, uint8_t)) {
     _user_onCommand = function;
 }
 
+// explicitly handle writing char buffers to registers
+// register 0 is set to the buffer size (in bytes)
+size_t I2C_Slave::writeRegisters(char* buf) {
+    size_t sz = strlen(buf);
+    _registers[0] = sz;
+    char* reg = (char*)&_registers[1];
+    memcpy(reg, buf, sz);
+    return sz;
+}
+
 // Private Methods
 // //////////////////////////////////////////////////////////////
 

@@ -57,6 +57,9 @@ Slave.onCommand(command_handler);
 ### Basic
 This library's equivalent of `blink.ino` - stores the value of `analogRead(A0)` into the virtual registers.  No command callback is defined.  The ArduPilot script, `extras/basic.lua` simply reads the register data and provides it to the GCS as a named float value.
 
+### HelloWorld
+Demonstrates writing a character buffer to the virtual registers.  The ArduPilot script, `extras/hello_world.lua` retrieves the characters and concatenates them into a string.
+
 ### AnalogRead
 Builds upon the basic example, providing access to every analog pin's value via a set of commands interpreted by the callback function, `command_handler()`.  The ArduPilot script, `extras/analog_read.lua` accompanies and shows how to unpack received signed integer values rather than assuming receipt of unsigned values.
 
