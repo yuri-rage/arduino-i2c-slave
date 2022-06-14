@@ -4,6 +4,11 @@ Creates an I2C slave device on the hardware I2C bus of an Arduino compatible mic
 ## Background
 I2C_Slave is intended for use with the Lua scripting engine on [ArduPilot autopilots](https://ardupilot.org/) to allow communication with otherwise unsupported sensors.  However, it can easily be used wherever a simple means of I2C communication is desired.
 
+## Installation
+For the time being, I2C_Slave is only available via this repository.  Download it as a [zip file](https://github.com/yuri-rage/arduino-i2c-slave/archive/refs/heads/master.zip) and follow the instructions for [importing a zip file](https://www.arduino.cc/en/Guide/Libraries?setlang=en). Or, if you prefer PlatformIO, unzip or clone the library to your project’s lib/ directory.
+
+With a little more project traction and community testing, the library may be published to the official Arduino Library Registry and made available via the Library Manager.
+
 ## Usage
 The library's `Slave` object is used much like the `Wire` object.  The library uses the hardware I2C bus and, in the background, the default `Wire` object, so any connected I2C peripherals should probably use a different bus, such as one created with the [SoftwareWire](https://www.arduino.cc/reference/en/libraries/softwarewire/) library.
 
@@ -57,6 +62,9 @@ Builds upon the basic example, providing access to every analog pin's value via 
 
 ### DS18B20
 Polls OneWire temperature sensors connected to pin 2, transmits their values upon request, and interprets a small set of configuration commands.  The ArduPilot script, `extras/ds18b20.lua` shows how to unpack IEEE754 float values and provide them to the GCS as named floats.
+
+## Contributing
+For the latest developments and news on the project, join the [discussion on the ArduPilot Discuss Forum](https://discuss.ardupilot.org/t/unsupported-sensors-try-arduino-lua).  Pull requests are always welcome. 
 
 ## License
 This library is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
