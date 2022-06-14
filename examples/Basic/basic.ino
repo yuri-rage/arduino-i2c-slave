@@ -1,7 +1,7 @@
 // I2C_Slave basic example
 // creates an I2C slave device on the microcontroller hardware I2C pins
 // stores a single analog pin value for retrieval over the I2C bus
-// connection to ArduPilot autopilots requires extras/analog_read.lua
+// connection to ArduPilot autopilots requires extras/basic.lua
 
 #include <Arduino.h>
 #include <I2C_Slave.h>

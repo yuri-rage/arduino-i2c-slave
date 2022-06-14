@@ -49,7 +49,14 @@ Slave.onCommand(command_handler);
 
 ## Examples
 
-The included DS18B20 example polls OneWire temperature sensors connected to pin 2, transmits their values upon request, and interprets a small set of configuration commands.  To use the example code with ArduPilot, a `ds18b20.lua` script is provided in the `extras` directory.
+### Basic
+This library's equivalent of `blink.ino` - stores the value of `analogRead(A0)` into the virtual registers.  No command callback is defined.  The ArduPilot script, `extras/basic.lua` simply reads the register data and provides it to the GCS as a named float value.
+
+### AnalogRead
+Builds upon the basic example, providing access to every analog pin's value via a set of commands interpreted by the callback function, `command_handler()`.  The ArduPilot script, `extras/analog_read.lua` accompanies and shows how to unpack received signed integer values rather than assuming receipt of unsigned values.
+
+### DS18B20
+Polls OneWire temperature sensors connected to pin 2, transmits their values upon request, and interprets a small set of configuration commands.  The ArduPilot script, `extras/ds18b20.lua` shows how to unpack IEEE754 float values and provide them to the GCS as named floats.
 
 ## License
 This library is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
