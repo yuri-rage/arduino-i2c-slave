@@ -26,8 +26,13 @@
 // unused address (https://i2cdevices.org/addresses)
 #define DEFAULT_I2C_ADDR 0x09
 
+// compatibility macros for most boards
 #ifndef BUFFER_LENGTH
+#ifndef I2C_BUFFER_LENGTH
+#define BUFFER_LENGTH 32
+#else
 #define BUFFER_LENGTH I2C_BUFFER_LENGTH
+#endif
 #endif
 
 class I2C_Slave {
