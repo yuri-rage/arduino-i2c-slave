@@ -8,6 +8,7 @@ begin	KEYWORD2
 numErrors	KEYWORD2
 onCommand	KEYWORD2
 writeRegisters	KEYWORD2
+numRegisters	KEYWORD2
 
 # Instances (KEYWORD2)
 
