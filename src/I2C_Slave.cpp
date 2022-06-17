@@ -21,7 +21,6 @@
 
 // Initialize Class Variables //////////////////////////////////////////////////
 
-volatile uint8_t _register_index = 0;
 volatile uint32_t _numErrors = 0;
 void (*I2C_Slave::_user_onCommand)(uint8_t, uint8_t){};
 
@@ -66,29 +65,29 @@ size_t I2C_Slave::writeRegisters(char* buf) {
 // Private Methods
 // //////////////////////////////////////////////////////////////
 
-void I2C_Slave::_onRequest() { Wire.write(_registers[_register_index]); }
+void I2C_Slave::_onRequest() {
+    uint8_t idx = 0;
+    if (Wire.available()) {
+        idx = Wire.read();
+        if (idx > BUFFER_LENGTH - 1) idx = 0;
+    }
+    Wire.write(_registers[idx]);
+}
 
 void I2C_Slave::_onReceive(int size) {
+    if (size < 2) return;  // let the request handler process this
+
     if (size > 2) {
-        // we should only ever receive two bytes - flush read buffer
-        for (int i = 0; i < size; i++) {
-            Wire.read();
-        }
+        // assume an error on more than 2 bytes - flush read buffer
+        while (Wire.available()) Wire.read();
         _numErrors++;
         return;
     }
 
-    uint8_t b0 = Wire.read();
-
-    // single byte indicates a read request, set register index
-    if (size == 1) {
-        _register_index = (b0 > BUFFER_LENGTH) ? 0 : b0;
-        return;
-    }
-
-    uint8_t b1 = Wire.read();
-
-    // two bytes indicate a command, pass to user function
+    // otherwise, two bytes indicate a command, pass to user function
+    uint8_t b0, b1;
+    b0 = Wire.read();
+    b1 = Wire.read();
     _user_onCommand(b0, b1);
 }
 
