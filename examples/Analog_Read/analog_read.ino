@@ -13,19 +13,28 @@
 #define GET_NUM_PINS 0xFE
 #define SET_PIN_INDEX 0xFF
 
+#ifdef ESP32  // board compatibility
+static const uint8_t A1 = 34;
+static const uint8_t A2 = 35;
+#endif
+
 uint32_t num_errors = 0;
-int err_value = -1;
+const int err_value = -1;
+
+// array of analog pins to monitor
+const uint32_t analog_pins[] = { (uint32_t)A0, (uint32_t)A1, (uint32_t)A2, (uint32_t)A3 };
+const uint8_t num_pins = sizeof(analog_pins) / sizeof(analog_pins[0]);
 
 // callback to handle I2C commands upon receipt
 void command_handler(uint8_t command, uint8_t value) {
     switch (command) {
         case GET_NUM_PINS:
-            Slave.writeRegisters((uint8_t)NUM_ANALOG_INPUTS);
+            Slave.writeRegisters(num_pins);
             Serial.println(F("Pin count requested.\n"));
             break;
         case SET_PIN_INDEX:
-            if (value < NUM_ANALOG_INPUTS) {
-                Slave.writeRegisters(analogRead(value));
+            if (value < num_pins) {
+                Slave.writeRegisters(analogRead(analog_pins[value]));
             } else {
                 Slave.writeRegisters(err_value);
             }
@@ -43,7 +52,7 @@ void setup() {
     if (I2C_ADDR < 0x10) Serial.print('0');
     Serial.println(I2C_ADDR, HEX);
     Serial.print("Analog pin count : ");
-    Serial.println(NUM_ANALOG_INPUTS);
+    Serial.println(num_pins);
 
 #ifdef LED_BUILTIN
     pinMode(LED_BUILTIN, OUTPUT);
