@@ -5,9 +5,7 @@ Creates an I2C slave device on the hardware I2C bus of an Arduino compatible mic
 I2C_Slave is intended for use with the Lua scripting engine on [ArduPilot autopilots](https://ardupilot.org/) to allow communication with otherwise unsupported sensors.  However, it can easily be used wherever a simple means of I2C communication is desired.
 
 ## Installation
-For the time being, I2C_Slave is only available via this repository.  Download it as a [zip file](https://github.com/yuri-rage/arduino-i2c-slave/archive/refs/heads/master.zip) and follow the instructions for [importing a zip file](https://www.arduino.cc/en/Guide/Libraries?setlang=en). Or, if you prefer PlatformIO, unzip or clone the library to your project’s lib/ directory.
-
-With a little more project traction and community testing, the library may be published to the official Arduino Library Registry and made available via the Library Manager.
+Download the zip file from [releases](https://github.com/yuri-rage/arduino-i2c-slave/releases) and follow Arduino's instructions for [importing a zip file](https://www.arduino.cc/en/Guide/Libraries?setlang=en). If you prefer PlatformIO, unzip or clone the library to your project’s `lib/` directory. This library has been submitted to the Arduino IDE Library Manager and may be available there soon.
 
 ## Usage
 The library's `Slave` object is used much like the `Wire` object.  The library uses the hardware I2C bus and, in the background, the default `Wire` object, so any connected I2C peripherals should probably use a different bus, such as one created with the [SoftwareWire](https://www.arduino.cc/reference/en/libraries/softwarewire/) library.
