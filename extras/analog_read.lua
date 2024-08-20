@@ -40,17 +40,12 @@ local num_pins = 0
 local arduino_i2c = i2c.get_device(I2C_BUS, SLAVE_ADDR)
 arduino_i2c:set_retries(10)
 
-local function unpack_int(b) -- for signed integer values
-    if type(b) ~= 'table' then return ERROR_VALUE end
-    if not (b[0]) then return ERROR_VALUE end
-    local i = 0
-    local mask = 0
-    if b[#b] & 0x80 == 0x80 then mask = 0xFF end
-    for x = 0, #b do
-        i = i | (b[x] ~ mask) << (8 * x)
-    end
-    if mask > 0 then i = (i + 1) * -1 end
-    return i
+local function unpack_uint(b)
+    if type(b) ~= 'table' or #b == 0 then return ERROR_VALUE end
+    local packed_string = string.char(table.unpack(b))
+    local fmt = ('I%d'):format(#b)  -- unsigned integer of table size
+    local val = string.unpack(fmt, packed_string)
+    return val
 end
 
 local function read_register_data()
@@ -60,7 +55,7 @@ local function read_register_data()
     if not size then return nil end
     -- retrieve and store register data
     for idx = 1, size do
-        bytes[idx - 1] = arduino_i2c:read_registers(idx)
+        bytes[idx] = arduino_i2c:read_registers(idx)
     end
     return bytes
 end
@@ -74,9 +69,9 @@ function update()
     for idx = 0, num_pins - 1 do
         -- request to store analog pin value in I2C registers for given index
         arduino_i2c:write_register(SET_PIN_INDEX, idx)
-        -- now read the register data and collect its value as a signed integer
-        local val = unpack_int(read_register_data())
-        gcs:send_named_float('A' .. idx, val)
+        -- now read the register data and collect its value as an unsigned integer
+        local data = read_register_data()
+        gcs:send_named_float('A' .. idx, unpack_uint(data))
     end
     return update, RUN_INTERVAL_MS
 end

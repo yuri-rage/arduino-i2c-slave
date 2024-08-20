@@ -46,31 +46,11 @@ local num_sensors = 0
 local arduino_i2c = i2c.get_device(I2C_BUS, SLAVE_ADDR)
 arduino_i2c:set_retries(10)
 
-local function unpack_ieee754_float(b)
-    if type(b) ~= 'table' then return ERROR_VALUE end
-    if #b ~= 3 then return ERROR_VALUE end
-    -- https://github.com/markstinson/lua-MessagePack/blob/master/src/MessagePack.lua#L621
-    local sign = b[3] > 0x7F
-    local expo = (b[3] % 0x80) * 0x2 + math.floor(b[2] / 0x80)
-    local mant = ((b[2] % 0x80) * 0x100 + b[1]) * 0x100 + b[0]
-    if sign then
-        sign = -1
-    else
-        sign = 1
-    end
-    local n
-    if mant == 0 and expo == 0 then
-        n = sign * 0.0
-    elseif expo == 0xFF then
-        if mant == 0 then
-            n = sign * math.huge
-        else
-            n = 0.0 / 0.0
-        end
-    else
-        n = sign * (1.0 + mant / 0x800000) * 2 ^ (expo - 0x7F)
-    end
-    return n
+local function unpack_double(b)
+    if type(b) ~= 'table' or #b ~= 8 then return ERROR_VALUE end
+    local packed_string = string.char(table.unpack(b))
+    local val = string.unpack('d', packed_string)
+    return val
 end
 
 local function read_register_data()
@@ -80,7 +60,7 @@ local function read_register_data()
     if not size then return nil end
     -- retrieve and store register data
     for idx = 1, size do
-        bytes[idx - 1] = arduino_i2c:read_registers(idx)
+        bytes[idx] = arduino_i2c:read_registers(idx)
     end
     return bytes
 end
@@ -94,8 +74,8 @@ function update()
     for idx = 0, num_sensors - 1 do
         -- request to store sensor temperature in I2C registers for given index
         arduino_i2c:write_register(SET_SENSOR_INDEX, idx)
-        -- now read the register data and collect its value as a float
-        local val = unpack_ieee754_float(read_register_data())
+        -- now read the register data and collect its value as a double
+        local val = unpack_double(read_register_data())
         gcs:send_named_float('T' .. idx, val)
     end
     return update, RUN_INTERVAL_MS

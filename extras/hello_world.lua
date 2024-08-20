@@ -36,14 +36,9 @@ local MAV_SEVERITY_INFO =    6
 local arduino_i2c = i2c.get_device(I2C_BUS, SLAVE_ADDR)
 arduino_i2c:set_retries(10)
 
-local function get_string(b) -- constructs a string from character buffer
-    if type(b) ~= 'table' then return ERROR_STRING end
-    if not (b[0]) then return ERROR_STRING end
-    local str = ''
-    for x = 0, #b do
-        str = str .. string.char(b[x])
-    end
-    return str
+local function get_string(b)
+    if type(b) ~= 'table' or #b == 0 then return ERROR_STRING end
+    return string.char(table.unpack(b))
 end
 
 local function read_register_data()
@@ -53,7 +48,7 @@ local function read_register_data()
     if not size then return nil end
     -- retrieve and store register data
     for idx = 1, size do
-        bytes[idx - 1] = arduino_i2c:read_registers(idx)
+        bytes[idx] = arduino_i2c:read_registers(idx)
     end
     return bytes
 end

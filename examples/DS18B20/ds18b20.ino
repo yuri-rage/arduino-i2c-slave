@@ -31,7 +31,7 @@ uint32_t num_errors = 0;
 
 struct {
     DeviceAddress addr;
-    float temp;
+    double temp;
 } devices[MAX_DEVICES];
 
 // callback to handle I2C commands upon receipt
