@@ -49,6 +49,7 @@ arduino_i2c:set_retries(10)
 local function unpack_double(b)
     if type(b) ~= 'table' or #b ~= 8 then return ERROR_VALUE end
     local packed_string = string.char(table.unpack(b))
+    -- see https://www.lua.org/manual/5.3/manual.html#6.4.2 for string.unpack format options
     local val = string.unpack('d', packed_string)
     return val
 end
