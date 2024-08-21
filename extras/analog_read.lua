@@ -40,10 +40,11 @@ local num_pins = 0
 local arduino_i2c = i2c.get_device(I2C_BUS, SLAVE_ADDR)
 arduino_i2c:set_retries(10)
 
-local function unpack_uint(b)
+local function unpack_int(b)
     if type(b) ~= 'table' or #b == 0 then return ERROR_VALUE end
     local packed_string = string.char(table.unpack(b))
-    local fmt = ('I%d'):format(#b)  -- unsigned integer of table size
+    -- see https://www.lua.org/manual/5.3/manual.html#6.4.2 for string.unpack format options
+    local fmt = ('i%d'):format(#b)  -- signed integer of table size
     local val = string.unpack(fmt, packed_string)
     return val
 end
@@ -69,9 +70,9 @@ function update()
     for idx = 0, num_pins - 1 do
         -- request to store analog pin value in I2C registers for given index
         arduino_i2c:write_register(SET_PIN_INDEX, idx)
-        -- now read the register data and collect its value as an unsigned integer
+        -- now read the register data and collect its value as an signed integer
         local data = read_register_data()
-        gcs:send_named_float('A' .. idx, unpack_uint(data))
+        gcs:send_named_float('A' .. idx, unpack_int(data))
     end
     return update, RUN_INTERVAL_MS
 end
