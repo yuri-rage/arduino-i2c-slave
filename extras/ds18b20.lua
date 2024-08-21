@@ -1,29 +1,29 @@
 
 --[[----------------------------------------------------------------------------
-ds18b20.lua ArduPilot Lua script
+    ds18b20.lua ArduPilot Lua script
 
-Polls an Arduino (or similar device) on the I2C bus for OneWire temperature
-sensor data.
+    Polls an Arduino (or similar device) on the I2C bus for OneWire temperature
+    sensor data.
 
-Intended for use with the I2C_Slave Arduino library.
+    Intended for use with the I2C_Slave Arduino library.
 
-CAUTION: This script is capable of engaging and disengaging autonomous control
-of a vehicle.  Use this script AT YOUR OWN RISK.
+    CAUTION: This script is capable of engaging and disengaging autonomous control
+    of a vehicle.  Use this script AT YOUR OWN RISK.
 
--- Yuri -- June 2022
+    Copyright (C) 2024 Yuri Rage
 
-This script is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-This script is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with
-this script. If not, see <https://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
 -- Cube and Matek autopilots typically make I2C bus 0 available
