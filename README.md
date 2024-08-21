@@ -2,17 +2,20 @@
 Creates an I2C slave device on the hardware I2C bus of an Arduino compatible microcontroller.
 
 ## Background
-I2C_Slave is intended for use with the Lua scripting engine on [ArduPilot autopilots](https://ardupilot.org/) to allow communication with otherwise unsupported sensors.  However, it can easily be used wherever a simple means of I2C communication is desired.
+I2C_Slave is intended for use with the Lua scripting engine on [ArduPilot autopilots](https://ardupilot.org/) to allow communication with otherwise unsupported sensors. However, it can easily be used wherever a simple means of I2C communication is desired.
 
 ## Installation
-Download the zip file from [releases](https://github.com/yuri-rage/arduino-i2c-slave/releases) and follow Arduino's instructions for [importing a zip file](https://www.arduino.cc/en/Guide/Libraries?setlang=en). If you prefer PlatformIO, unzip or clone the library to your project’s `lib/` directory. This library has been submitted to the Arduino IDE Library Manager and may be available there soon.
+Install the library via the Arduino Library Manager or PlatformIO Library Registry.
 
+Alternatively, download the zip file from [releases](https://github.com/yuri-rage/arduino-i2c-slave/releases) and follow Arduino's instructions for [importing a zip file](https://www.arduino.cc/en/Guide/Libraries?setlang=en). If you prefer PlatformIO, unzip or clone the library to your project’s `lib/` directory.
+
+To install via PlatformIO, add the following to your `platformio.ini`:
 ## Usage
 The library's `Slave` object is used much like the `Wire` object.  The library uses the hardware I2C bus and, in the background, the default `Wire` object, so any connected I2C peripherals should probably use a different bus, such as one created with the [SoftwareWire](https://www.arduino.cc/reference/en/libraries/softwarewire/) library.
 
 To create an I2C slave interface, call the `begin()` method from within your sketch's `setup()` function.  The single byte address argument is optional and defaults to the unused address, `0x09`.
 ```
-void setup() {}
+void setup() {
     Slave.begin(); // or Slave.begin(0x0A);
 }
 ```
@@ -55,10 +58,10 @@ Slave.onCommand(command_handler);
 ### Basic
 This library's equivalent of `blink.ino` - stores the value of `analogRead(A0)` into the virtual registers.  No command callback is defined.  The ArduPilot script, `extras/basic.lua` simply reads the register data and provides it to the GCS as a named float value.
 
-### HelloWorld
+### Hello World
 Demonstrates writing a character buffer to the virtual registers.  The ArduPilot script, `extras/hello_world.lua` retrieves the characters and concatenates them into a string.
 
-### AnalogRead
+### Analog Read
 Builds upon the basic example, providing access to every analog pin's value via a set of commands interpreted by the callback function, `command_handler()`.  The ArduPilot script, `extras/analog_read.lua` accompanies and shows how to unpack received signed integer values rather than assuming receipt of unsigned values.
 
 ### DS18B20
@@ -68,12 +71,17 @@ Polls OneWire temperature sensors connected to pin 2, transmits their values upo
 For the latest developments and news on the project, join the [discussion on the ArduPilot Discuss Forum](https://discuss.ardupilot.org/t/unsupported-sensors-try-arduino-lua).  Pull requests are always welcome. 
 
 ## License
-This library is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
-version.
+Copyright &copy; 2024 Yuri Rage
 
-This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-details.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-You should have received a copy of the GNU General Public License along with this library. If not, see <https://www.gnu.org/licenses/>.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-<sub>&copy; Yuri, June 2022</sub>
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
