@@ -9,7 +9,6 @@ Install the library via the Arduino Library Manager or PlatformIO Library Regist
 
 Alternatively, download the zip file from [releases](https://github.com/yuri-rage/arduino-i2c-slave/releases) and follow Arduino's instructions for [importing a zip file](https://www.arduino.cc/en/Guide/Libraries?setlang=en). If you prefer PlatformIO, unzip or clone the library to your project’s `lib/` directory.
 
-To install via PlatformIO, add the following to your `platformio.ini`:
 ## Usage
 The library's `Slave` object is used much like the `Wire` object.  The library uses the hardware I2C bus and, in the background, the default `Wire` object, so any connected I2C peripherals should probably use a different bus, such as one created with the [SoftwareWire](https://www.arduino.cc/reference/en/libraries/softwarewire/) library.
 
