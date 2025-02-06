@@ -45,6 +45,7 @@ class I2C_Slave {
     I2C_Slave();
     void begin();
     void begin(uint8_t);
+    void begin(uint8_t addr, uint32_t sda, uint32_t scl);
     uint32_t numErrors();
     size_t numRegisters();
     void onCommand(void (*)(uint8_t, uint8_t));

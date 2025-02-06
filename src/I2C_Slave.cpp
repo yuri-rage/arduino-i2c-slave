@@ -23,6 +23,10 @@
 volatile uint32_t _numErrors = 0;
 void (*I2C_Slave::_user_onCommand)(uint8_t, uint8_t){};
 
+// create a new wire object
+TwoWire new_Wire = TwoWire();
+
+
 // Constructors ////////////////////////////////////////////////////////////////
 
 I2C_Slave::I2C_Slave() {}
@@ -30,12 +34,20 @@ I2C_Slave::I2C_Slave() {}
 // Public Methods //////////////////////////////////////////////////////////////
 
 void I2C_Slave::begin() {
-    Wire.begin(_addr);
-    Wire.onRequest(_onRequest);
-    Wire.onReceive(_onReceive);
+    new_Wire.begin(_addr);
+    new_Wire.onRequest(_onRequest);
+    new_Wire.onReceive(_onReceive);
 }
 
 void I2C_Slave::begin(uint8_t addr) {
+    _addr = addr;
+    this->begin();
+}
+
+// assign the pin if alternate I2C is used esle assign default pin
+void I2C_Slave::begin(uint8_t addr, uint32_t sda = SDA, uint32_t scl = SCL) {
+    new_Wire.setSDA(sda);
+    new_Wire.setSCL(scl);
     _addr = addr;
     this->begin();
 }
@@ -66,11 +78,11 @@ size_t I2C_Slave::writeRegisters(char* buf) {
 
 void I2C_Slave::_onRequest() {
     uint8_t idx = 0;
-    if (Wire.available()) {
-        idx = Wire.read();
+    if (new_Wire.available()) {
+        idx = new_Wire.read();
         if (idx > BUFFER_LENGTH - 1) idx = 0;
     }
-    Wire.write(_registers[idx]);
+    new_Wire.write(_registers[idx]);
 }
 
 void I2C_Slave::_onReceive(int size) {
@@ -78,15 +90,15 @@ void I2C_Slave::_onReceive(int size) {
 
     if (size > 2) {
         // assume an error on more than 2 bytes - flush read buffer
-        while (Wire.available()) Wire.read();
+        while (new_Wire.available()) new_Wire.read();
         _numErrors++;
         return;
     }
 
     // otherwise, two bytes indicate a command, pass to user function
     uint8_t b0, b1;
-    b0 = Wire.read();
-    b1 = Wire.read();
+    b0 = new_Wire.read();
+    b1 = new_Wire.read();
     _user_onCommand(b0, b1);
 }
 
